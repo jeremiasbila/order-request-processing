@@ -1,0 +1,27 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+terraform.tfvars
+.terraform.lock.hcl
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Build outputs
+*.zip
+build/
+dist/
+
+# Environment / IDE
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store

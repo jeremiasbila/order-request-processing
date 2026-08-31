@@ -1,0 +1,26 @@
+digraph QuickCart {
+  rankdir=LR;
+  graph [fontname="Arial", bgcolor="white", pad="0.3", nodesep="0.5", ranksep="0.8"];
+  node [shape=box, style="rounded", fontname="Arial", fontsize=11];
+  edge [fontname="Arial", fontsize=9];
+
+  client [label="Customer / Client"];
+  api [label="Amazon API Gateway\nHTTP API"];
+  producer [label="AWS Lambda\nsubmit-order"];
+  queue [label="Amazon SQS\norders queue", shape=cylinder];
+  consumer [label="AWS Lambda\nprocess-order"];
+  dynamo [label="Amazon DynamoDB\norder-results", shape=cylinder];
+  dlq [label="Amazon SQS\norders DLQ", shape=cylinder];
+  cloudwatch [label="Amazon CloudWatch\nLogs + Metrics + Alarms"];
+
+  client -> api [label="POST /orders"];
+  api -> producer [label="invoke"];
+  producer -> queue [label="SendMessage"];
+  queue -> consumer [label="event source mapping"];
+  consumer -> dynamo [label="conditional PutItem"];
+  queue -> dlq [label="after 5 failed receives", style=dashed];
+  producer -> cloudwatch [label="logs", style=dotted];
+  consumer -> cloudwatch [label="logs", style=dotted];
+  queue -> cloudwatch [label="metrics", style=dotted];
+  dlq -> cloudwatch [label="metrics", style=dotted];
+}

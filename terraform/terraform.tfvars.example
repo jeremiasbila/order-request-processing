@@ -1,0 +1,5 @@
+aws_region               = "eu-central-1"
+project_name             = "quickcart-orders"
+environment              = "dev"
+log_retention_days       = 14
+consumer_max_concurrency = 10
