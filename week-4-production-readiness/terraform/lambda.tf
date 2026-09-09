@@ -18,6 +18,11 @@ resource "aws_lambda_function" "producer" {
   timeout          = 5
   memory_size      = 128
 
+  vpc_config {
+    subnet_ids         = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+    security_group_ids = [aws_security_group.lambda.id]
+  }
+
   environment {
     variables = {
       QUEUE_URL = aws_sqs_queue.orders.url
@@ -36,6 +41,11 @@ resource "aws_lambda_function" "consumer" {
   source_code_hash = data.archive_file.consumer.output_base64sha256
   timeout          = 10
   memory_size      = 128
+
+  vpc_config {
+    subnet_ids         = [aws_subnet.private_a.id, aws_subnet.private_b.id]
+    security_group_ids = [aws_security_group.lambda.id]
+  }
 
   environment {
     variables = {

@@ -1,0 +1,11 @@
+aws_region                 = "eu-central-1"
+project_name               = "quickcart-orders"
+environment                = "dev"
+log_retention_days         = 14
+consumer_max_concurrency   = 10
+vpc_cidr                   = "10.20.0.0/16"
+public_subnet_a_cidr       = "10.20.0.0/24"
+public_subnet_b_cidr       = "10.20.1.0/24"
+private_subnet_a_cidr      = "10.20.10.0/24"
+private_subnet_b_cidr      = "10.20.11.0/24"
+enable_pitr                = false

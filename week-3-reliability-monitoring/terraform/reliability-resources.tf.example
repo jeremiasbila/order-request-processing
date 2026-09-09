@@ -1,0 +1,9 @@
+# Learning map - resource types introduced/extended in Week 3
+# aws_sqs_queue (DLQ + redrive_policy)
+# aws_sqs_queue_redrive_allow_policy
+# aws_dynamodb_table
+# aws_lambda_event_source_mapping function_response_types = ["ReportBatchItemFailures"]
+# aws_cloudwatch_log_metric_filter
+# aws_cloudwatch_metric_alarm
+# aws_cloudwatch_dashboard
+# See Week 4 terraform/ for executable configuration.

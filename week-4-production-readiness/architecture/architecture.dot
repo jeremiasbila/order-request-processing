@@ -1,0 +1,33 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", pad="0.3", nodesep="0.45", ranksep="0.65", fontname="Arial"];
+  node [shape=box, style="rounded,filled", fillcolor="#F7F9FC", color="#4B5563", fontname="Arial", fontsize=10];
+  edge [color="#4B5563", fontname="Arial", fontsize=9];
+  customer [label="Customer / Client", shape=oval, fillcolor="#FFFFFF"];
+  apigw [label="Amazon API Gateway\nHTTP API\nRegional managed service"];
+  subgraph cluster_region {
+    label="AWS Region: eu-central-1 (configurable)"; color="#2563EB"; penwidth=2; style="rounded";
+    subgraph cluster_vpc {
+      label="VPC 10.20.0.0/16"; color="#16A34A"; style="rounded,dashed";
+      prod [label="Lambda: submit-order\nPrivate subnets A + B"];
+      cons [label="Lambda: process-order\nPrivate subnets A + B"];
+      sqsvpce [label="SQS Interface\nVPC Endpoint", shape=component];
+      ddbvpce [label="DynamoDB Gateway\nVPC Endpoint", shape=component];
+    }
+    q [label="Amazon SQS\nStandard Queue", shape=cylinder, fillcolor="#FFF7ED"];
+    dlq [label="Amazon SQS\nDead-Letter Queue", shape=cylinder, fillcolor="#FEF2F2"];
+    ddb [label="Amazon DynamoDB\nOrder Results / Idempotency", shape=cylinder, fillcolor="#EFF6FF"];
+    cw [label="Amazon CloudWatch\nLogs • Metrics • Alarms • Dashboard", fillcolor="#F5F3FF"];
+  }
+  customer -> apigw [label="POST /orders"];
+  apigw -> prod [label="Lambda invoke"];
+  prod -> sqsvpce [label="HTTPS 443"];
+  sqsvpce -> q [label="SendMessage"];
+  q -> cons [label="event source mapping"];
+  cons -> ddbvpce [label="PutItem"];
+  ddbvpce -> ddb;
+  q -> dlq [label="after 5 failed receives", color="#DC2626"];
+  prod -> cw [style=dashed, label="logs"];
+  cons -> cw [style=dashed, label="logs"];
+  q -> cw [style=dashed, label="metrics"];
+  dlq -> cw [style=dashed, label="alarm"];
+}

@@ -27,6 +27,20 @@ data "aws_iam_policy_document" "producer" {
     resources = [aws_sqs_queue.orders.arn]
   }
 
+
+  statement {
+    sid    = "ManageLambdaVpcEni"
+    effect = "Allow"
+    actions = [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeSubnets",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:UnassignPrivateIpAddresses"
+    ]
+    resources = ["*"]
+  }
   statement {
     sid       = "WriteProducerLogs"
     effect    = "Allow"
@@ -60,6 +74,20 @@ data "aws_iam_policy_document" "consumer" {
     resources = [aws_dynamodb_table.order_results.arn]
   }
 
+
+  statement {
+    sid    = "ManageLambdaVpcEni"
+    effect = "Allow"
+    actions = [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeSubnets",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:UnassignPrivateIpAddresses"
+    ]
+    resources = ["*"]
+  }
   statement {
     sid       = "WriteConsumerLogs"
     effect    = "Allow"

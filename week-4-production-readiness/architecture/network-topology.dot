@@ -1,0 +1,31 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad="0.3", nodesep="0.4", ranksep="0.5", fontname="Arial"];
+ node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#475569", fontname="Arial", fontsize=10];
+ edge [color="#475569", fontname="Arial", fontsize=9];
+ internet [label="Internet / Customer", shape=oval, fillcolor="white"];
+ apigw [label="API Gateway HTTP API\nAWS managed, outside VPC"];
+ subgraph cluster_region { label="Region: eu-central-1"; color="#2563EB"; penwidth=2; style="rounded";
+  subgraph cluster_vpc { label="VPC 10.20.0.0/16"; color="#16A34A"; penwidth=2; style="rounded";
+   igw [label="Internet Gateway", shape=component];
+   subgraph cluster_az1 { label="Availability Zone 1"; color="#94A3B8"; style="rounded";
+    puba [label="Public subnet A\n10.20.0.0/24\nRoute: 0.0.0.0/0 -> IGW"];
+    pra [label="Private app subnet A\n10.20.10.0/24\nLambda ENIs\nSQS VPCE ENI", fillcolor="#ECFDF5"];
+   }
+   subgraph cluster_az2 { label="Availability Zone 2"; color="#94A3B8"; style="rounded";
+    pubb [label="Public subnet B\n10.20.1.0/24\nRoute: 0.0.0.0/0 -> IGW"];
+    prb [label="Private app subnet B\n10.20.11.0/24\nLambda ENIs\nSQS VPCE ENI", fillcolor="#ECFDF5"];
+   }
+   ddbep [label="DynamoDB Gateway Endpoint\nassociated with private route tables", shape=component, fillcolor="#EFF6FF"];
+   note [label="No NAT Gateway\nNo private default Internet route", shape=note, fillcolor="#FFF7ED"];
+  }
+  sqs [label="SQS regional service", shape=cylinder, fillcolor="#FFF7ED"];
+  ddb [label="DynamoDB regional service", shape=cylinder, fillcolor="#EFF6FF"];
+ }
+ internet -> apigw;
+ apigw -> pra [label="Lambda service invoke", style=dashed];
+ apigw -> prb [style=dashed];
+ puba -> igw [dir=both]; pubb -> igw [dir=both];
+ pra -> sqs [label="SQS Interface VPCE / HTTPS"];
+ prb -> sqs [label="SQS Interface VPCE / HTTPS"];
+ pra -> ddbep; prb -> ddbep; ddbep -> ddb;
+}

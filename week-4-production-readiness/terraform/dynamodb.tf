@@ -8,6 +8,10 @@ resource "aws_dynamodb_table" "order_results" {
     type = "S"
   }
 
+  point_in_time_recovery {
+    enabled = var.enable_pitr
+  }
+
   ttl {
     attribute_name = "expires_at"
     enabled        = true
