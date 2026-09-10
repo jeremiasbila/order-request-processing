@@ -55,6 +55,7 @@ def lambda_handler(event, context):
         "items": payload["items"],
         "acceptedAt": accepted_at,
         "simulateFailure": bool(payload.get("simulateFailure", False)),
+        "quantity": sum(item.get("quantity", 0) for item in payload.get("items", [])),
     }
 
     try:

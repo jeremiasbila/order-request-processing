@@ -31,6 +31,7 @@ def _process_record(record):
                 "processed_at": now,
                 "item_count": len(order.get("items", [])),
                 "expires_at": expires_at,
+                "quantity": sum(item.get("quantity", 0) for item in order.get("items", [])),
             },
             ConditionExpression="attribute_not_exists(order_id)",
         )
