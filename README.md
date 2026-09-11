@@ -16,14 +16,6 @@ Repeated failures -> SQS Dead-Letter Queue. CloudWatch collects logs/metrics and
 
 ![Final AWS architecture](week-4-production-readiness/architecture/architecture.png)
 
-### Network topology diagram
-
-![VPC, AZ and CIDR topology](week-4-production-readiness/architecture/network-topology.png)
-
-### Retry and DLQ flow
-
-![Retry and DLQ lifecycle](week-4-production-readiness/architecture/message-retry-flow.png)
-
 ### AWS networking
 
 - Region: `eu-central-1` by default (Frankfurt); configurable with Terraform.
