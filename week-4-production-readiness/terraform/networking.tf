@@ -20,7 +20,7 @@ resource "aws_subnet" "public_a" {
   cidr_block              = var.public_subnet_a_cidr
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
-  tags = { Name = "${local.name}-public-a", Tier = "public" }
+  tags                    = { Name = "${local.name}-public-a", Tier = "public" }
 }
 
 resource "aws_subnet" "public_b" {
@@ -28,21 +28,21 @@ resource "aws_subnet" "public_b" {
   cidr_block              = var.public_subnet_b_cidr
   availability_zone       = data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = true
-  tags = { Name = "${local.name}-public-b", Tier = "public" }
+  tags                    = { Name = "${local.name}-public-b", Tier = "public" }
 }
 
 resource "aws_subnet" "private_a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_a_cidr
   availability_zone = data.aws_availability_zones.available.names[0]
-  tags = { Name = "${local.name}-private-app-a", Tier = "private" }
+  tags              = { Name = "${local.name}-private-app-a", Tier = "private" }
 }
 
 resource "aws_subnet" "private_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_b_cidr
   availability_zone = data.aws_availability_zones.available.names[1]
-  tags = { Name = "${local.name}-private-app-b", Tier = "private" }
+  tags              = { Name = "${local.name}-private-app-b", Tier = "private" }
 }
 
 resource "aws_route_table" "public" {
@@ -65,11 +65,11 @@ resource "aws_route_table_association" "public_b" {
 
 resource "aws_route_table" "private_a" {
   vpc_id = aws_vpc.main.id
-  tags = { Name = "${local.name}-private-a-rt" }
+  tags   = { Name = "${local.name}-private-a-rt" }
 }
 resource "aws_route_table" "private_b" {
   vpc_id = aws_vpc.main.id
-  tags = { Name = "${local.name}-private-b-rt" }
+  tags   = { Name = "${local.name}-private-b-rt" }
 }
 resource "aws_route_table_association" "private_a" {
   subnet_id      = aws_subnet.private_a.id

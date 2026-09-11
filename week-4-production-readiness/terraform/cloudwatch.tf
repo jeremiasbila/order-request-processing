@@ -88,7 +88,7 @@ resource "aws_cloudwatch_dashboard" "orders" {
       {
         type = "metric", x = 12, y = 0, width = 12, height = 6,
         properties = {
-          title = "DLQ", view = "timeSeries", region = var.aws_region,
+          title   = "DLQ", view = "timeSeries", region = var.aws_region,
           metrics = [["AWS/SQS", "ApproximateNumberOfMessagesVisible", "QueueName", aws_sqs_queue.orders_dlq.name]]
         }
       },
@@ -105,7 +105,7 @@ resource "aws_cloudwatch_dashboard" "orders" {
       {
         type = "metric", x = 12, y = 6, width = 12, height = 6,
         properties = {
-          title = "Application processing failures", view = "timeSeries", region = var.aws_region,
+          title   = "Application processing failures", view = "timeSeries", region = var.aws_region,
           metrics = [["QuickCart/Orders", "ProcessingFailures"]]
         }
       }
