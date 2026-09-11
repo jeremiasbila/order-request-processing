@@ -67,9 +67,7 @@ order-request-processing/
     ├── tests/
     ├── scripts/
     └── terraform/        # final end-to-end deployable IaC
-```
 
-## Prerequisites
 
 ### Required workstation tools
 
